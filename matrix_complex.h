@@ -12,7 +12,7 @@ typedef struct matrix
 	int row, column;  
 	ComplexType* arrayComplex;  
 	
-	//void (*print)(void);  //æˆå‘˜å‡½æ•°print
+	//void (*print)(void);  //³ÉÔ±º¯Êıprint
 	
 	
 }Matrix;
@@ -31,14 +31,14 @@ typedef enum
 	False = 0, True = 1
 }Bool;
 
-//æ„é€ çŸ©é˜µ
+//¹¹Ôì¾ØÕó
 /* Initiation of Complex Matrix */
 Matrix* InitComplexMatrix(int row, int column)  // Transmiss of Pointer
 {
 	int size = row * column * sizeof(ComplexType);
 	if (size <= 0)
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("InitComplexMatrix ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	
@@ -62,7 +62,7 @@ Matrix2Double* InitDoubleMatrix(int row, int column)
 	int size = row * column * sizeof(DoubleType);
 	if (size <= 0)
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("InitDoubleMatrix ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	Matrix2Double* matrix = (Matrix2Double*)malloc(sizeof(Matrix2Double));
@@ -85,7 +85,7 @@ Matrix2Double* InitDoubleMatrix(int row, int column)
 
 
 
-//freeå•ç‹¬çŸ©é˜µï¼š
+//freeµ¥¶À¾ØÕó£º
 /* Validity of Complex Matrix */
 Bool IsNullComplexMatrix(const Matrix* matrix)
 {
@@ -106,6 +106,7 @@ void DestroyComplexMatrix(Matrix* matrix)
 		matrix->arrayComplex = NULL;
 	}
 	matrix->row = matrix->column = 0;
+	free(matrix);
 }
 
 
@@ -129,10 +130,11 @@ void DestroyDoubleMatrix(Matrix2Double* matrix)
 		matrix->arrayDouble = NULL;
 	}
 	matrix->row = matrix->column = 0;
+	free(matrix);
 }
 
 
-//freeçŸ©é˜µæ•°ç»„ï¼š
+//free¾ØÕóÊı×é£º
 	/* Free Memory of Complex Matrice Array */
 void DestroyComplexMatrixArray(Matrix matrixArray[], int num)  // Array Transfer--->Pointer Transfer
 {
@@ -159,7 +161,7 @@ void DestroyDoubleMatrixArray(Matrix2Double* matrixArray, int num)
 }
 
 
-//è·å–å®æ•°çŸ©é˜µè¡Œã€åˆ—ã€å…ƒèƒæ•°ç›®
+//»ñÈ¡ÊµÊı¾ØÕóĞĞ¡¢ÁĞ¡¢Ôª°ûÊıÄ¿
 int DoubleMatrixRow(const Matrix2Double* matrix)
 {
 	return matrix->row;
@@ -177,7 +179,7 @@ int DoubleMatrixSize(const Matrix2Double* matrix)
 
 
 
-//è·å–å¤æ•°çŸ©é˜µè¡Œã€åˆ—ã€å…ƒèƒæ•°ç›®
+//»ñÈ¡¸´Êı¾ØÕóĞĞ¡¢ÁĞ¡¢Ôª°ûÊıÄ¿
 /* Return Matrix Row Size */
 int MatrixRow(const Matrix* matrix)
 {
@@ -195,7 +197,7 @@ int MatrixSize(const Matrix* matrix)
 }
 
 
-//çŸ©é˜µåŠ æ³•
+//¾ØÕó¼Ó·¨
 /* Complex Matrix Add: matrixC = matrixA + matrixB */
 Matrix* AddMatrix(const Matrix* matrix_A, const Matrix* matrix_B)
 {
@@ -237,7 +239,7 @@ Matrix* AddMatrix(const Matrix* matrix_A, const Matrix* matrix_B)
 
 
 
-//å®æ•°çŸ©é˜µè½¬åŒ–æˆå¤æ•°çŸ©é˜µ
+//ÊµÊı¾ØÕó×ª»¯³É¸´Êı¾ØÕó
 Matrix* DtoCMatrix( const Matrix2Double* matrix_B)
 {
 	
@@ -260,7 +262,7 @@ Matrix* DtoCMatrix( const Matrix2Double* matrix_B)
 
 
 
-//å®çŸ©é˜µcos
+//Êµ¾ØÕócos
 Matrix2Double *cos_D_M(Matrix2Double* matrix)
 {
 	int row = matrix->row;
@@ -274,14 +276,13 @@ Matrix2Double *cos_D_M(Matrix2Double* matrix)
 	return res;
 }
 
-//å®çŸ©é˜µsin
+//Êµ¾ØÕósin
 Matrix2Double *sin_D_M(Matrix2Double* matrix)
 {
 	int row = matrix->row;
 	int col = matrix->column;
 	//Matrix2Double *res = (Matrix2Double*)malloc(sizeof(matrix));
-	Matrix2Double *res;
-	res = InitDoubleMatrix(row, col);
+	Matrix2Double *res = InitDoubleMatrix(row, col);
 	int i = 0;
 	for (i = 0; i < row*col; i++) {
 		res->arrayDouble[i] = sin(matrix->arrayDouble[i]);
@@ -292,14 +293,14 @@ Matrix2Double *sin_D_M(Matrix2Double* matrix)
 
 
 
-//å¤çŸ©é˜µç‚¹ä¹˜å¤æ•°
+//¸´¾ØÕóµã³Ë¸´Êı
 /* Point Multiple: Complex matrixB = Complex matrixA .* Complex_c */
 Matrix* MatrixPointMulComplex(const Matrix* matrixA, ComplexType c)
 {
 	
 	if (IsNullComplexMatrix(matrixA))
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("MatrixPointMulComplex ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	else
@@ -316,13 +317,13 @@ Matrix* MatrixPointMulComplex(const Matrix* matrixA, ComplexType c)
 	}
 }
 
-//å¤çŸ©é˜µç‚¹ä¹˜å®æ•°
+//¸´¾ØÕóµã³ËÊµÊı
 /* Point Multiple: Complex matrixB = Complex matrixA .* Double_c */
 Matrix* MatrixPointMulDouble(const Matrix* matrixA, DoubleType c)
 {
 	if (IsNullComplexMatrix(matrixA))
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("MatrixPointMulDouble ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	Matrix* matrixB = InitComplexMatrix(matrixA->row, matrixA->column);
@@ -338,13 +339,13 @@ Matrix* MatrixPointMulDouble(const Matrix* matrixA, DoubleType c)
 
 
 
-//å®çŸ©é˜µç‚¹ä¹˜å®æ•°
+//Êµ¾ØÕóµã³ËÊµÊı
 /* Point Multiple: Double matrixB = Double matrixA .* Double_c */
 Matrix2Double* DoubleMatrixPointMulDouble(const Matrix2Double* matrixA, DoubleType c)
 {
 	if (IsNullDoubleMatrix(matrixA))
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("DoubleMatrixPointMulDouble ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	Matrix2Double* matrixB = InitDoubleMatrix(matrixA->row, matrixA->column);
@@ -359,7 +360,7 @@ Matrix2Double* DoubleMatrixPointMulDouble(const Matrix2Double* matrixA, DoubleTy
 }
 
 
-//å¤æ•°çŸ©é˜µä¹˜æ³•
+//¸´Êı¾ØÕó³Ë·¨
 /*
   Complex Matrix Multiple: matrixC = matrixA * matrixB
 */
@@ -367,13 +368,13 @@ Matrix* MatrixMulMatrix(const Matrix* matrixA, const Matrix* matrixB)
 {
 	if (IsNullComplexMatrix(matrixA) || IsNullComplexMatrix(matrixB))  // Validity of Known Matrice
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("MatrixMulMatrix ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 
 	else if (matrixA->column != matrixB->row)  // Incompatability of Size
 	{
-		puts("ERROE: An incompatable matrix!\n");
+		puts("MatrixMulMatrix ERROE: An incompatable matrix!\n");
 		return NULL;
 	}
 	else
@@ -408,13 +409,13 @@ Matrix* MatrixMulMatrix(const Matrix* matrixA, const Matrix* matrixB)
 }
 
 
-//å¤æ•°çŸ©é˜µæ™®é€šè½¬ç½®
+//¸´Êı¾ØÕóÆÕÍ¨×ªÖÃ
 /* Change Postion: [i, j] -- > [j, i] */
 Matrix* TransPoseMatrix(const Matrix* matrixA)			// Tip:if A==U * U', then A'==A
 {																		// So this function is not a necessity
 	if (IsNullComplexMatrix(matrixA))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("TransPoseMatrix ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 
@@ -438,13 +439,60 @@ Matrix* TransPoseMatrix(const Matrix* matrixA)			// Tip:if A==U * U', then A'==A
 }
 
 
-//å®æ•°çŸ©é˜µæ™®é€šè½¬ç½®
+
+//¹²éî×ªÖÃ
+/* Conjugate Complex: Complex_B = creal(Complex_A) - cimag(Complpex_A) */
+ComplexType ConjugateComplex(const ComplexType Complex_A)
+{
+	ComplexType Complex_B;
+	Complex_B._Val[0] = creal(Complex_A);
+	Complex_B._Val[1] = cimag(Complex_A) * (-1.0);
+	return Complex_B;
+}
+
+/* Transposition: Complex matrixB = Complex matrixA' */
+void TransMatrix(const Matrix* matrixA, Matrix* matrixB)			// matrixB is transposal matrix
+{
+	if (IsNullComplexMatrix(matrixA))
+	{
+		puts("TransMatrix ERROE: An invalid matrix!\n");
+		return;
+	}
+	else if ((matrixA->row != matrixB->column) || (matrixA->column != matrixB->row))
+	{
+		puts("TransMatrix ERROE: An incompatable matrix!\n");
+		return;
+	}
+	else
+	{
+		for (int row_i = 0; row_i < matrixA->row; row_i++)
+		{
+			for (int column_j = 0; column_j < matrixA->column; column_j++)
+			{
+				// Transpose: position and sign w.r.t a Complex Number; only position w.r.t a Double Number
+				matrixB->arrayComplex[column_j * matrixB->column + row_i] = \
+					ConjugateComplex(matrixA->arrayComplex[row_i * matrixA->column + column_j]); // Attention!!!
+				// OR
+/*
+				matrixB->arrayComplex[column_j * matrixB->column + row_i]._Val[0] = \
+					creal(matrixA->arrayComplex[row_i * matrixA->column + column_j]);
+				matrixB->arrayComplex[column_j * matrixB->column + row_i]._Val[1] = \
+					cimag(matrixA->arrayComplex[row_i * matrixA->column + column_j]) * (-1.0);
+*/
+			}
+		}
+	}
+}
+
+
+
+//ÊµÊı¾ØÕóÆÕÍ¨×ªÖÃ
 /* Change Postion: [i, j] -- > [j, i] */
 Matrix2Double* TransPoseDoubleMatrix(const Matrix2Double* matrixA)			// Tip:if A==U * U', then A'==A
 {																		// So this function is not a necessity
 	if (IsNullDoubleMatrix(matrixA))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("TransPoseDoubleMatrix ERROE: An invalid matrix!\n");
 		return NULL;
 	}
 	else
@@ -464,7 +512,7 @@ Matrix2Double* TransPoseDoubleMatrix(const Matrix2Double* matrixA)			// Tip:if A
 
 
 
-//è¡Œåˆ—å¼ï¼ˆä»…é™ä¸‰é˜¶åŠä»¥ä¸‹ï¼‰
+//ĞĞÁĞÊ½£¨½öÏŞÈı½×¼°ÒÔÏÂ£©
 /* Determinant Value */
 ComplexType Comput_D(const Matrix* matrix /*float *p, short int n*/)
 {
@@ -475,12 +523,12 @@ ComplexType Comput_D(const Matrix* matrix /*float *p, short int n*/)
 
 	if (MatrixRow(matrix) != MatrixColumn(matrix))
 	{
-		puts("ERROE: Not a square matrix!\n");
+		puts("Comput_D ERROE: Not a square matrix!\n");
 		return result;
 	}
 	if (IsNullComplexMatrix(matrix))
 	{
-		printf("ERROE: An invalid matrix!\n");
+		printf("Comput_D ERROE: An invalid matrix!\n");
 		return result;
 	}
 
@@ -525,7 +573,7 @@ ComplexType Comput_D(const Matrix* matrix /*float *p, short int n*/)
 
 
 
-//ä»£æ•°ä½™å­å¼(ä»…é™ä¸‰é˜¶åŠä»¥ä¸‹)
+//´úÊıÓà×ÓÊ½(½öÏŞÈı½×¼°ÒÔÏÂ)
 /* Algebraic Cofactor Cell: Used for Inverting A Matrix----Square Matrix */
 ComplexType CofactorMatrix(const Matrix* matrix, int m, int n)
 {
@@ -534,7 +582,7 @@ ComplexType CofactorMatrix(const Matrix* matrix, int m, int n)
 	Cofactor_result._Val[0] = 0; Cofactor_result._Val[1] = 0;
 	if (IsNullComplexMatrix(matrix))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("CofactorMatrix ERROE: An invalid matrix!\n");
 		return Cofactor_result;
 	}
 
@@ -585,7 +633,7 @@ ComplexType CofactorMatrix(const Matrix* matrix, int m, int n)
 
 
 
-//å¤æ•°çŸ©é˜µæ±‚é€†
+//¸´Êı¾ØÕóÇóÄæ
 /* Euqal Complex */
 Bool IsEqual(const ComplexType Complex_A, const ComplexType Complex_B)
 {
@@ -613,7 +661,7 @@ ComplexType DivComplex(const ComplexType Complex_A, const ComplexType Complex_B)
 			* Complex_B._Val[1]) / (pow(Complex_B._Val[0], 2) + pow(Complex_B._Val[1], 2));
 	*/
 	return Complex_C;
-	//  Div = (ac + bdï¼‰ / ï¼ˆc ^ 2 + d ^ 2ï¼‰ï¼‰ï¼‹ï¼ˆbcï¼adï¼‰ / ï¼ˆc ^ 2 + d ^ 2ï¼‰i
+	//  Div = (ac + bd£© / £¨c ^ 2 + d ^ 2£©£©£«£¨bc£­ad£© / £¨c ^ 2 + d ^ 2£©i
 }
 
 /* Invert: matrix_Invert = 1/matrix_Initial */
@@ -643,7 +691,7 @@ Matrix* InvMat(const Matrix* matrix_Initial)
 
 
 
-//æ±‚å®æ•°çš„åæ–¹å·®é˜µ
+//ÇóÊµÊıµÄĞ­·½²îÕó
 /* Covariance Matrix Cell */
 DoubleType covDoubleMatrixCell(const DoubleType x[], const DoubleType y[], const int size)  // size refers to row number of matrix
 {
@@ -697,7 +745,7 @@ void CovarianceDoubleMatrix(const Matrix2Double* matrix, const Matrix2Double* Tr
 }
 
 
-//å¤æ•°çŸ©é˜µåæ–¹å·®é˜µ
+//¸´Êı¾ØÕóĞ­·½²îÕó
 /* Covariance Matrix Cell: void */
 ComplexType covMatrixCell(const ComplexType x[], const ComplexType y[], const int size)  // size refers to row number of matrix
 {
@@ -781,7 +829,7 @@ void CovarianceComplexMatrix(const Matrix* matrix, const Matrix* TransMat, const
 
 
 
-//çŸ©é˜µçš„æ¨¡
+//¾ØÕóµÄÄ£
 /* 2-norm of a Matrix */
 ComplexType MatrixNorm2(const Matrix* matrix)
 {
@@ -791,7 +839,7 @@ ComplexType MatrixNorm2(const Matrix* matrix)
 	norm._Val[0] = 0; norm._Val[1] = 0;
 	if (IsNullComplexMatrix(matrix))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("MatrixNorm2 ERROE: An invalid matrix!\n");
 		return (csqrt(norm));
 	}
 	else
@@ -815,13 +863,13 @@ ComplexType MatrixNorm2(const Matrix* matrix)
 
 
 
-//QRåˆ†è§£
+//QR·Ö½â
 /* QR Decompose */
 void QR(const Matrix* A, Matrix* Q, Matrix* R)
 {
 	if (IsNullComplexMatrix(A))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("QR ERROE: An invalid matrix!\n");
 		return;
 	}
 	// Not A Square Matrix
@@ -892,13 +940,13 @@ void QR(const Matrix* A, Matrix* Q, Matrix* R)
 	DestroyComplexMatrix(b);
 }
 
-//å¤æ•°çŸ©é˜µå¤åˆ¶
+//¸´Êı¾ØÕó¸´ÖÆ
 /* Copy: Complex matrixA = Complex matrixB */
 void CopyMatrix(const Matrix* matrix_A, Matrix* matrix_B)
 {
 	if (IsNullComplexMatrix(matrix_A))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("CopyMatrix ERROE: An invalid matrix!\n");
 		return;
 	}
 	//matrix_B->row = MatrixRow(matrix_A);
@@ -922,14 +970,15 @@ void CopyMatrix(const Matrix* matrix_A, Matrix* matrix_B)
 }
 
 
-//ç‰¹å¾å€¼
+//ÌØÕ÷Öµ
 /* eigen values */
 void EigenValue(const Matrix* matrix, Matrix* eigenvalue)
 {
 	const int NUM = 100;   // Iteration Times
 
 	// Local Matrice
-	Matrix *Q, *R, *temp;
+	Matrix *Q, *R;
+	Matrix *temp;
 	// Initiate
 	Q = InitComplexMatrix(matrix->row, matrix->column);
 	R = InitComplexMatrix(matrix->row, matrix->column);
@@ -937,7 +986,7 @@ void EigenValue(const Matrix* matrix, Matrix* eigenvalue)
 
 	if (IsNullComplexMatrix(matrix))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("EigenValue ERROE: An invalid matrix!\n");
 		return;
 	}
 	// Copy matrix to temp in order not to change matrix
@@ -946,6 +995,7 @@ void EigenValue(const Matrix* matrix, Matrix* eigenvalue)
 	for (int k = 0; k < NUM; ++k)
 	{
 		QR(temp, Q, R);
+		DestroyComplexMatrix(temp);
 		temp = MatrixMulMatrix(R, Q);
 	}
 	// Abstract Eigen Values from the Diagonal Elements of temp =  Q * R
@@ -957,12 +1007,16 @@ void EigenValue(const Matrix* matrix, Matrix* eigenvalue)
 	Matrix ComplexMatrixArray[] = { *R, *Q, *temp };
 	int numComplexMatrixArray = sizeof(ComplexMatrixArray) / sizeof(Matrix);
 	DestroyComplexMatrixArray(ComplexMatrixArray, numComplexMatrixArray);      // Complpex Matrix
+	
+	//DestroyComplexMatrix(Q);
+	//DestroyComplexMatrix(R);
+	//DestroyComplexMatrix(temp);
 //	return eigenvalue;
 }
 
 
 
-//ç‰¹å¾å‘é‡
+//ÌØÕ÷ÏòÁ¿
 /* Negative Complex : Complex_B = -Complex_A = -creal(Complex_A) - cimag(Complpex_A) */
 ComplexType NegativeComplex(const ComplexType Complex_A)
 {
@@ -981,7 +1035,7 @@ void EigenVector(const Matrix* matrix, const Matrix* eigenvalue, Matrix* eigenve
 {
 	if (IsNullComplexMatrix(matrix) || IsNullComplexMatrix(eigenvalue))
 	{
-		puts("ERROE: An invalid matrix!\n");
+		puts("EigenVector ERROE: An invalid matrix!\n");
 		return;
 	}
 	int i, j, q;
@@ -994,12 +1048,12 @@ void EigenVector(const Matrix* matrix, const Matrix* eigenvalue, Matrix* eigenve
 
 	// Access to temp
 	ComplexType sum, midsum, mid;
-	Matrix *temp;   // temp = A - Î»I: (A - Î»I) * x = 0
+	Matrix *temp;   // temp = A - ¦ËI: (A - ¦ËI) * x = 0
 	temp = InitComplexMatrix(matrix->row, matrix->column);
 
 	for (count = 0; count < num; ++count)
 	{
-		// Calculate x: Ax = Î» * x
+		// Calculate x: Ax = ¦Ë * x
 		evalue = eigenvalue->arrayComplex[count];
 		CopyMatrix(matrix, temp);
 		for (i = 0; i < temp->column; ++i)
@@ -1061,13 +1115,176 @@ void EigenVector(const Matrix* matrix, const Matrix* eigenvalue, Matrix* eigenve
 }
 
 
+void qsort_double(ComplexType* array, int left, int right)
+{
+	if (left > right)  return;
+	double midnum = array[left]._Val[0];
+	int begin_idx = left;
+	int end_idx = right;
+	double tmp = 0;
+	while (left < right) {
+		while (array[right]._Val[0] >= midnum && left < right) {
+			right--;
+		}
+		while (array[left]._Val[0] <= midnum && left < right) {
+			left++;
+		}
+		if (left < right) {
+			tmp = array[left]._Val[0];
+			array[left]._Val[0] = array[right]._Val[0];
+			array[right]._Val[0] = tmp;
+		}
+	}
+	//´ËÊ±left==right
+	tmp = array[left]._Val[0];
+	array[left]._Val[0] = array[begin_idx]._Val[0];
+	array[begin_idx]._Val[0] = tmp;
+	qsort_double(array, begin_idx, left - 1);
+	qsort_double(array, left + 1, end_idx);
+	return;
+}
+
+
+//½«ÌØÕ÷ÏòÁ¿°´ÕÕÉıĞòÅÅÁĞ£¬¿ìÅÅ
+void eig_sort(Matrix* EigenValue)
+{
+	int size = EigenValue->column * EigenValue->row;
+	//double *num = (double*)malloc(size * sizeof(double));
+	//int i = 0;
+	int left = 0, right = size - 1;
+	qsort_double(EigenValue->arrayComplex, left, right);
+	return;
+}
+
+
+void qresort_double(ComplexType* array, int left, int right)
+{
+	if (left > right)  return;
+	double midnum = array[left]._Val[0];
+	int begin_idx = left;
+	int end_idx = right;
+	double tmp = 0;
+	while (left < right) {
+		while (array[right]._Val[0] <= midnum && left < right) {
+			right--;
+		}
+		while (array[left]._Val[0] >= midnum && left < right) {
+			left++;
+		}
+		if (left < right) {
+			tmp = array[left]._Val[0];
+			array[left]._Val[0] = array[right]._Val[0];
+			array[right]._Val[0] = tmp;
+		}
+	}
+	//´ËÊ±left==right
+	tmp = array[left]._Val[0];
+	array[left]._Val[0] = array[begin_idx]._Val[0];
+	array[begin_idx]._Val[0] = tmp;
+	qresort_double(array, begin_idx, left - 1);
+	qresort_double(array, left + 1, end_idx);
+	return;
+}
+
+//½«ÌØÕ÷ÏòÁ¿°´ÕÕ½µĞòÅÅÁĞ£¬¿ìÅÅ
+void eig_resort(Matrix* EigenValue)
+{
+	int size = EigenValue->column * EigenValue->row;
+	//double *num = (double*)malloc(size * sizeof(double));
+	//int i = 0;
+	int left = 0, right = size - 1;
+	qresort_double(EigenValue->arrayComplex, left, right);
+	return;
+}
+
+
+
+
+//¸´¾ØÕóÇĞÆ¬º¯Êı, begin:´ÓµÚbeginĞĞ/ÁĞ¿ªÊ¼ÇĞÆ¬£¨º¬µÚbeginĞĞ£©£»end: µ½µÚbeginĞĞ/ÁĞ½áÊø£¨º¬µÚendĞĞ£©£»op=0£º°´ĞĞÇĞÆ¬£¬op=1£º°´ÁĞÇĞÆ¬
+Matrix *MatrixSlice(Matrix *matrix, int begin, int end, int op)
+{
+	if (begin < 1) {
+		printf("MatrixSlice 'begin' para error!\n");
+	}
+	else if (begin > end) {
+		printf("MatrixSlice 'begin' larger than 'end'!\n");
+	}
+	
+	if (op == 1) {
+		if (end > matrix->column) {
+			printf("MatrixSlice 'end' para error!\n");
+		}
+		/*Matrix target;
+		target.arrayComplex = (ComplexType*)malloc((begin - end + 1)*matrix->row * sizeof(ComplexType));
+		target.row = matrix->row;
+		target.column = begin - end + 1;*/
+		Matrix *target = InitComplexMatrix(matrix->row, begin - end + 1);
+		
+		Matrix *res = target;
+		//Matrix res;
+		//DestroyComplexMatrix(&target);
+		
+		int i = 0, idx = 0;
+		while (i < matrix->row) {
+			int j = begin - 1;
+			for (j = begin - 1; j < end; j++) {
+				res->arrayComplex[idx++] = matrix->arrayComplex[i * matrix->column + j];
+			}
+			i++;
+		}
+		return res;
+	}
+	if (op == 0) {
+		if (end > matrix->row) {
+			printf("MatrixSlice 'end' para error!\n");
+		}
+		/*Matrix* target;
+		target->arrayComplex = (ComplexType*)malloc((begin - end + 1)*matrix->column * sizeof(ComplexType));
+		target->row = begin - end + 1;
+		target->column = matrix->column;
+		Matrix res = *target;
+		free(target);*/
+		/*Matrix target;
+		target.arrayComplex = (ComplexType*)malloc((begin - end + 1)*matrix->column * sizeof(ComplexType));
+		target.row = begin - end + 1;
+		target.column = matrix->column;*/
+		Matrix *target = InitComplexMatrix(begin-end+1, matrix->column);
+		Matrix *res = target;
+		//DestroyComplexMatrix(&target);
+		int idx = 0;
+		int j = 0;
+		int i = begin - 1;
+		for (i = begin - 1; i < end; i++) {
+			while (j < matrix->column){
+				res->arrayComplex[idx++] = matrix->arrayComplex[i * matrix->column + j];
+				j++;
+			}
+		}
+		return res;
+	}
+	printf("----MatrixSlice error!----\n");
+	return NULL;
+}
 
 
 
 
 
 
-//æ‰“å°å¤çŸ©é˜µ
+
+
+
+
+
+
+
+
+
+
+
+
+
+//´òÓ¡¸´¾ØÕó
 void PrintMatrix(const Matrix* matrix)
 {
 	int row = matrix->row;
@@ -1085,7 +1302,7 @@ void PrintMatrix(const Matrix* matrix)
 
 }
 
-//æ‰“å°å®çŸ©é˜µ
+//´òÓ¡Êµ¾ØÕó
 void PrintMatrix2Double(const Matrix2Double* matrix)
 {
 	int row = matrix->row;
